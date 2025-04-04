@@ -1,0 +1,2130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechCompare - iPhone 16 vs Samsung Galaxy S24</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(120deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 200% 200%;
+            animation: gradient-animation 10s ease infinite;
+        }
+        
+        @keyframes gradient-animation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .tab-active {
+            color: #4f46e5;
+            border-bottom: 3px solid #4f46e5;
+            font-weight: 600;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .btn {
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background-color: #4f46e5;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background-color: #e2e8f0;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 1s ease-in-out;
+        }
+        
+        .star-rating {
+            color: #f59e0b;
+        }
+        
+        .retailer-logo {
+            transition: all 0.3s ease;
+            filter: grayscale(100%);
+            opacity: 0.7;
+        }
+        
+        .retailer-logo:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+        
+        .pros-cons ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .pros-cons li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 10px;
+        }
+        
+        .pros li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #10b981;
+            font-weight: bold;
+        }
+        
+        .cons li:before {
+            content: '✕';
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #ef4444;
+            font-weight: bold;
+        }
+        
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+        
+        .specs-table tr:nth-child(odd) {
+            background-color: rgba(243, 244, 246, 0.7);
+        }
+        
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #4f46e5;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Optimize for single page PDF export */
+        @media print {
+            body {
+                width: 100%;
+                height: auto;
+                overflow: visible;
+                background-color: white;
+            }
+            
+            .container {
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            
+            .no-print {
+                display: none !important;
+            }
+            
+            .card {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+            
+            .gradient-bg {
+                background: #f8f9fa;
+                animation: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-white shadow-sm py-4 sticky top-0 z-50 print:relative">
+        <div class="container mx-auto px-4 flex items-center justify-between">
+            <div class="flex items-center">
+                <div class="text-2xl font-bold text-indigo-600">
+                    <i class="fas fa-bolt mr-2"></i>TechCompare
+                </div>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <a href="#" class="font-medium text-gray-700 hover:text-indigo-600 transition">Home</a>
+                <a href="#" class="font-medium text-gray-700 hover:text-indigo-600 transition">Smartphones</a>
+                <a href="#" class="font-medium text-gray-700 hover:text-indigo-600 transition">Laptops</a>
+                <a href="#" class="font-medium text-gray-700 hover:text-indigo-600 transition">Wearables</a>
+                <a href="#" class="font-medium text-gray-700 hover:text-indigo-600 transition">About</a>
+            </nav>
+            <button class="md:hidden focus:outline-none">
+                <i class="fas fa-bars text-gray-700 text-xl"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-16 gradient-bg text-white">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">Compare Tech Products Like a Pro</h1>
+            <p class="text-xl mb-8 max-w-3xl mx-auto">Get detailed specifications, performance metrics, and expert recommendations to make informed buying decisions.</p>
+            <div class="max-w-3xl mx-auto relative">
+                <input type="text" id="searchInput" placeholder="Enter products to compare (e.g., iPhone 16 vs Samsung Galaxy S24)" class="w-full py-4 px-6 rounded-full shadow-lg text-gray-800 text-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <button id="searchBtn" class="absolute right-2 top-2 bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded-full font-medium transition">
+                    Compare <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Comparison Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-2">iPhone 16 vs Samsung Galaxy S24</h2>
+            <p class="text-gray-600 mb-8">Comprehensive comparison of the latest flagship smartphones</p>
+            
+            <!-- Product Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <!-- iPhone 16 Card -->
+                <div class="card bg-white p-6">
+                    <div class="flex flex-col md:flex-row items-center md:items-start">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apple/apple-original.svg" alt="iPhone 16" class="w-48 h-48 object-contain mb-4 md:mb-0 md:mr-6">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-2">iPhone 16</h3>
+                            <div class="star-rating flex items-center mb-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="ml-2 text-gray-600">4.5 (2,843 reviews)</span>
+                            </div>
+                            <p class="text-xl font-bold text-indigo-600 mb-2">Starting from $799</p>
+                            <p class="text-gray-600 mb-2">Release Date: September 2024</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">128GB</span>
+                                <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">256GB</span>
+                                <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">512GB</span>
+                                <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">1TB</span>
+                            </div>
+                            <p class="text-gray-700">The iPhone 16 features Apple's latest A17 Pro chip, enhanced camera system, and improved battery life, all packaged in Apple's premium design.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Samsung Galaxy S24 Card -->
+                <div class="card bg-white p-6">
+                    <div class="flex flex-col md:flex-row items-center md:items-start">
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-original.svg" alt="Samsung Galaxy S24" class="w-48 h-48 object-contain mb-4 md:mb-0 md:mr-6">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-2">Samsung Galaxy S24</h3>
+                            <div class="star-rating flex items-center mb-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span class="ml-2 text-gray-600">4.0 (2,156 reviews)</span>
+                            </div>
+                            <p class="text-xl font-bold text-indigo-600 mb-2">Starting from $749</p>
+                            <p class="text-gray-600 mb-2">Release Date: January 2024</p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">128GB</span>
+                                <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">256GB</span>
+                                <span class="px-3 py-1 bg-gray-100 rounded-full text-sm">512GB</span>
+                            </div>
+                            <p class="text-gray-700">The Samsung Galaxy S24 offers a stunning display, powerful Snapdragon processor, versatile camera system, and Samsung's advanced AI features.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tabs Navigation -->
+            <div class="border-b border-gray-200 mb-8">
+                <ul class="flex flex-wrap -mb-px text-lg" id="comparisonTabs">
+                    <li class="mr-8">
+                        <a href="#specifications" class="tab-btn tab-active inline-block py-4 px-1" data-tab="specifications">Specifications</a>
+                    </li>
+                    <li class="mr-8">
+                        <a href="#features" class="tab-btn inline-block py-4 px-1" data-tab="features">Features</a>
+                    </li>
+                    <li class="mr-8">
+                        <a href="#performance" class="tab-btn inline-block py-4 px-1" data-tab="performance">Performance</a>
+                    </li>
+                    <li class="mr-8">
+                        <a href="#cameras" class="tab-btn inline-block py-4 px-1" data-tab="cameras">Cameras</a>
+                    </li>
+                    <li class="mr-8">
+                        <a href="#pricing" class="tab-btn inline-block py-4 px-1" data-tab="pricing">Pricing</a>
+                    </li>
+                    <li>
+                        <a href="#reviews" class="tab-btn inline-block py-4 px-1" data-tab="reviews">Reviews</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Specifications Tab Content -->
+            <div id="specifications" class="tab-content active">
+                <h3 class="text-2xl font-bold mb-8 section-title">Detailed Specifications</h3>
+                
+                <div class="overflow-hidden">
+                    <table class="specs-table w-full border-collapse">
+                        <thead>
+                            <tr class="bg-gray-100">
+                                <th class="text-left py-4 px-6 border-b">Specification</th>
+                                <th class="text-left py-4 px-6 border-b">iPhone 16</th>
+                                <th class="text-left py-4 px-6 border-b">Samsung Galaxy S24</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="py-4 px-6 border-b font-medium">Display</td>
+                                <td class="py-4 px-6 border-b">6.1-inch Super Retina XDR OLED, 1170 x 2532 pixels, 120Hz, HDR10, 2000 nits</td>
+                                <td class="py-4 px-6 border-b">6.2-inch Dynamic AMOLED 2X, 1080 x 2340 pixels, 120Hz, HDR10+, 2600 nits</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-6 border-b font-medium">Processor</td>
+                                <td class="py-4 px-6 border-b">Apple A17 Pro (3 nm)</td>
+                                <td class="py-4 px-6 border-b">Qualcomm Snapdragon 8 Gen 3 (4 nm)</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-6 border-b font-medium">RAM</td>
+                                <td class="py-4 px-6 border-b">8GB</td>
+                                <td class="py-4 px-6 border-b">12GB</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-6 border-b font-medium">Storage</td>
+                                <td class="py-4 px-6 border-b">128GB, 256GB, 512GB, 1TB</td>
+                                <td class="py-4 px-6 border-b">128GB, 256GB, 512GB</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-6 border-b font-medium">Rear Camera</td>
+                                <td class="py-4 px-6 border-b">48MP (wide) + 12MP (ultrawide) + 12MP (telephoto), 5x optical zoom</td>
+                                <td class="py-4 px-6 border-b">50MP (wide) + 12MP (ultrawide) + 10MP (telephoto), 3x optical zoom</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-6 border-b font-medium">Front Camera</td>
+                                <td class="py-4 px-6 border-b">12MP, f/1.9</td>
+                                <td class="py-4 px-6 border-b">12MP, f/2.2</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-6 border-b font-medium">Battery</td>
+                                <td class="py-4 px-6 border-b">3,857 mAh</td>
+                                <td class="py-4 px-6 border-b">4,000 mAh</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-6 border-b font-medium">Charging</td>
+                                <td class="py-4 px-6 border-b">25W wired, 15W MagSafe wireless</td>
+                                <td class="py-4 px-6 border-b">45W wired, 15W wireless</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-6 border-b font-medium">Operating System</td>
+                                <td class="py-4 px-6 border-b">iOS 18</td>
+                                <td class="py-4 px-6 border-b">Android 14, One UI 6.1</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-6 border-b font-medium">Dimensions</td>
+                                <td class="py-4 px-6 border-b">146.7 x 71.5 x 7.8 mm</td>
+                                <td class="py-4 px-6 border-b">147 x 70.6 x 7.6 mm</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-6 border-b font-medium">Weight</td>
+                                <td class="py-4 px-6 border-b">172g</td>
+                                <td class="py-4 px-6 border-b">167g</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-6 border-b font-medium">Water Resistance</td>
+                                <td class="py-4 px-6 border-b">IP68 (up to 6m for 30 mins)</td>
+                                <td class="py-4 px-6 border-b">IP68 (up to 1.5m for 30 mins)</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-6 border-b font-medium">Biometrics</td>
+                                <td class="py-4 px-6 border-b">Face ID</td>
+                                <td class="py-4 px-6 border-b">Ultrasonic under-display fingerprint, Face recognition</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-6 border-b font-medium">Colors</td>
+                                <td class="py-4 px-6 border-b">Black, White, Blue, Purple, Yellow</td>
+                                <td class="py-4 px-6 border-b">Phantom Black, Cream, Green, Purple</td>
+                            </tr>
+                            <tr>
+                                <td class="py-4 px-6 font-medium">Connectivity</td>
+                                <td class="py-4 px-6">5G, Wi-Fi 6E, Bluetooth 5.3, NFC, UWB</td>
+                                <td class="py-4 px-6">5G, Wi-Fi 7, Bluetooth 5.3, NFC, UWB</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Features Tab Content -->
+            <div id="features" class="tab-content">
+                <h3 class="text-2xl font-bold mb-8 section-title">Key Features Comparison</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                    <!-- Display Features -->
+                    <div class="card bg-white p-6">
+                        <div class="flex items-center justify-center bg-indigo-100 rounded-full w-16 h-16 mb-4">
+                            <i class="fas fa-mobile-alt text-indigo-600 text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4">Display</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                <div>
+                                    <span class="font-medium">iPhone 16:</span> Super Retina XDR OLED with better color accuracy and sunlight visibility
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                <div>
+                                    <span class="font-medium">Galaxy S24:</span> Dynamic AMOLED 2X with higher peak brightness and more vibrant colors
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="mr-3 mt-1 text-green-500"><i class="fas fa-trophy"></i></div>
+                                <div>
+                                    <span class="font-medium">Winner:</span> Galaxy S24 for higher brightness and better refresh rate implementation
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Performance Features -->
+                    <div class="card bg-white p-6">
+                        <div class="flex items-center justify-center bg-indigo-100 rounded-full w-16 h-16 mb-4">
+                            <i class="fas fa-microchip text-indigo-600 text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4">Performance</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                <div>
+                                    <span class="font-medium">iPhone 16:</span> A17 Pro chip with better single-core performance and efficiency
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                <div>
+                                    <span class="font-medium">Galaxy S24:</span> Snapdragon 8 Gen 3 with superior multi-core performance and AI processing
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="mr-3 mt-1 text-green-500"><i class="fas fa-trophy"></i></div>
+                                <div>
+                                    <span class="font-medium">Winner:</span> iPhone 16 for everyday tasks, Galaxy S24 for heavy multitasking
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Camera Features -->
+                    <div class="card bg-white p-6">
+                        <div class="flex items-center justify-center bg-indigo-100 rounded-full w-16 h-16 mb-4">
+                            <i class="fas fa-camera text-indigo-600 text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4">Camera</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                <div>
+                                    <span class="font-medium">iPhone 16:</span> Better computational photography and natural color reproduction
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                <div>
+                                    <span class="font-medium">Galaxy S24:</span> Higher megapixel count, better night mode, and more shooting options
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="mr-3 mt-1 text-green-500"><i class="fas fa-trophy"></i></div>
+                                <div>
+                                    <span class="font-medium">Winner:</span> iPhone 16 for video and point-and-shoot, Galaxy S24 for versatility
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Battery Features -->
+                    <div class="card bg-white p-6">
+                        <div class="flex items-center justify-center bg-indigo-100 rounded-full w-16 h-16 mb-4">
+                            <i class="fas fa-battery-full text-indigo-600 text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4">Battery & Charging</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                <div>
+                                    <span class="font-medium">iPhone 16:</span> Better standby time and battery optimization
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                <div>
+                                    <span class="font-medium">Galaxy S24:</span> Larger battery capacity and faster charging speeds
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="mr-3 mt-1 text-green-500"><i class="fas fa-trophy"></i></div>
+                                <div>
+                                    <span class="font-medium">Winner:</span> Galaxy S24 for faster charging and overall battery life
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Software Features -->
+                    <div class="card bg-white p-6">
+                        <div class="flex items-center justify-center bg-indigo-100 rounded-full w-16 h-16 mb-4">
+                            <i class="fas fa-cog text-indigo-600 text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4">Software & AI</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                <div>
+                                    <span class="font-medium">iPhone 16:</span> iOS 18 with improved AI features and longer software support (7+ years)
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                <div>
+                                    <span class="font-medium">Galaxy S24:</span> One UI 6.1 with extensive customization and advanced AI capabilities
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="mr-3 mt-1 text-green-500"><i class="fas fa-trophy"></i></div>
+                                <div>
+                                    <span class="font-medium">Winner:</span> iPhone 16 for longevity, Galaxy S24 for customization
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Ecosystem Features -->
+                    <div class="card bg-white p-6">
+                        <div class="flex items-center justify-center bg-indigo-100 rounded-full w-16 h-16 mb-4">
+                            <i class="fas fa-network-wired text-indigo-600 text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4">Ecosystem</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                <div>
+                                    <span class="font-medium">iPhone 16:</span> Seamless integration with Apple devices (Mac, iPad, AirPods, Apple Watch)
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="mr-3 mt-1 text-green-500"><i class="fas fa-check-circle"></i></div>
+                                <div>
+                                    <span class="font-medium">Galaxy S24:</span> Better third-party compatibility and integration with Windows
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <div class="mr-3 mt-1 text-green-500"><i class="fas fa-trophy"></i></div>
+                                <div>
+                                    <span class="font-medium">Winner:</span> iPhone 16 for Apple users, Galaxy S24 for flexibility
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Performance Tab Content -->
+            <div id="performance" class="tab-content">
+                <h3 class="text-2xl font-bold mb-8 section-title">Performance Benchmarks</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <!-- Benchmark Scores -->
+                    <div class="card bg-white p-6">
+                        <h4 class="text-xl font-bold mb-6">Benchmark Scores</h4>
+                        <div class="chart-container">
+                            <canvas id="benchmarkChart"></canvas>
+                        </div>
+                        <div class="mt-4 text-sm text-gray-600">
+                            <p>The iPhone 16's A17 Pro chip excels in single-core performance, while the Galaxy S24's Snapdragon 8 Gen 3 performs better in multi-core tests. For gaming, the iPhone has better sustained performance over time.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Battery Life -->
+                    <div class="card bg-white p-6">
+                        <h4 class="text-xl font-bold mb-6">Battery Life (Hours)</h4>
+                        <div class="chart-container">
+                            <canvas id="batteryChart"></canvas>
+                        </div>
+                        <div class="mt-4 text-sm text-gray-600">
+                            <p>Despite having a smaller battery, the iPhone 16 offers competitive battery life due to efficient hardware-software integration. The Galaxy S24 excels in video playback but falls slightly behind in web browsing endurance.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <!-- Display Quality -->
+                    <div class="card bg-white p-6">
+                        <h4 class="text-xl font-bold mb-6">Display Quality</h4>
+                        <div class="chart-container">
+                            <canvas id="displayChart"></canvas>
+                        </div>
+                        <div class="mt-4 text-sm text-gray-600">
+                            <p>The Galaxy S24's Dynamic AMOLED 2X display offers higher peak brightness and better color volume, while the iPhone 16's Super Retina XDR provides better color accuracy and consistency across different lighting conditions.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Real-world Performance -->
+                    <div class="card bg-white p-6">
+                        <h4 class="text-xl font-bold mb-6">Real-World Performance (Seconds)</h4>
+                        <div class="chart-container">
+                            <canvas id="realWorldChart"></canvas>
+                        </div>
+                        <div class="mt-4 text-sm text-gray-600">
+                            <p>In everyday tasks like app loading and multitasking, both phones perform exceptionally well. The iPhone 16 shows faster app launch times, while the Galaxy S24 handles multitasking more efficiently.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card bg-white p-6 mb-12">
+                    <h4 class="text-xl font-bold mb-6">Performance Analysis</h4>
+                    <p class="mb-4">Both the iPhone 16 and Samsung Galaxy S24 represent the pinnacle of smartphone performance in 2024, but they excel in different areas:</p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                        <div>
+                            <h5 class="font-bold text-lg mb-2">iPhone 16 Strengths:</h5>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>Superior single-core performance for responsive UI and app launching</li>
+                                <li>Better GPU performance for high-end gaming</li>
+                                <li>More efficient power management</li>
+                                <li>Consistent performance over extended periods</li>
+                                <li>Optimized software-hardware integration</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-lg mb-2">Galaxy S24 Strengths:</h5>
+                            <ul class="list-disc pl-5 space-y-2">
+                                <li>Better multi-core performance for multitasking</li>
+                                <li>More RAM for background app management</li>
+                                <li>Superior AI processing capabilities</li>
+                                <li>Faster charging technology</li>
+                                <li>More advanced cooling system for sustained heavy usage</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <p>For everyday users who prioritize smooth operation and reliability, the iPhone 16 offers a more consistent experience. Power users who frequently multitask or use AI-intensive applications might prefer the Galaxy S24's raw processing capabilities.</p>
+                </div>
+            </div>
+            
+            <!-- Cameras Tab Content -->
+            <div id="cameras" class="tab-content">
+                <h3 class="text-2xl font-bold mb-8 section-title">Camera Comparison</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <!-- Camera Specs -->
+                    <div class="card bg-white p-6">
+                        <h4 class="text-xl font-bold mb-6">Camera Specifications</h4>
+                        
+                        <table class="w-full border-collapse mb-4">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="text-left py-3 px-4 border-b">Feature</th>
+                                    <th class="text-left py-3 px-4 border-b">iPhone 16</th>
+                                    <th class="text-left py-3 px-4 border-b">Galaxy S24</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="py-3 px-4 border-b font-medium">Main Camera</td>
+                                    <td class="py-3 px-4 border-b">48MP, f/1.8, OIS</td>
+                                    <td class="py-3 px-4 border-b">50MP, f/1.8, OIS</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 border-b font-medium">Ultra-wide</td>
+                                    <td class="py-3 px-4 border-b">12MP, f/2.2, 120°</td>
+                                    <td class="py-3 px-4 border-b">12MP, f/2.2, 120°</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 border-b font-medium">Telephoto</td>
+                                    <td class="py-3 px-4 border-b">12MP, f/2.8, 5x optical zoom</td>
+                                    <td class="py-3 px-4 border-b">10MP, f/2.4, 3x optical zoom</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 border-b font-medium">Selfie Camera</td>
+                                    <td class="py-3 px-4 border-b">12MP, f/1.9, Autofocus</td>
+                                    <td class="py-3 px-4 border-b">12MP, f/2.2, Autofocus</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 border-b font-medium">Video Recording</td>
+                                    <td class="py-3 px-4 border-b">4K@60fps, 4K Dolby Vision</td>
+                                    <td class="py-3 px-4 border-b">8K@30fps, 4K@60fps</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 font-medium">Special Features</td>
+                                    <td class="py-3 px-4">Photographic Styles, Cinematic mode, ProRAW</td>
+                                    <td class="py-3 px-4">Expert RAW, Single Take, Director's View</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <div class="flex justify-center gap-4 mt-6">
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-indigo-600">92</div>
+                                <div class="text-sm text-gray-600">iPhone 16 DxOMark Score</div>
+                            </div>
+                            <div class="text-center">
+                                <div class="text-3xl font-bold text-indigo-600">90</div>
+                                <div class="text-sm text-gray-600">Galaxy S24 DxOMark Score</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Camera Comparison Images -->
+                    <div class="card bg-white p-6">
+                        <h4 class="text-xl font-bold mb-6">Camera Samples Comparison</h4>
+                        
+                        <div class="space-y-6">
+                            <div>
+                                <h5 class="font-medium mb-3">Daylight Photography</h5>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <div class="bg-gray-200 rounded-lg h-48 flex items-center justify-center mb-2">
+                                            <div class="text-gray-500 text-center px-4">
+                                                <i class="fas fa-image text-3xl mb-2"></i>
+                                                <p>iPhone 16 Sample</p>
+                                            </div>
+                                        </div>
+                                        <p class="text-sm text-gray-600">iPhone produces more natural colors with excellent detail preservation</p>
+                                    </div>
+                                    <div>
+                                        <div class="bg-gray-200 rounded-lg h-48 flex items-center justify-center mb-2">
+                                            <div class="text-gray-500 text-center px-4">
+                                                <i class="fas fa-image text-3xl mb-2"></i>
+                                                <p>Galaxy S24 Sample</p>
+                                            </div>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Galaxy offers more vibrant colors with slightly higher sharpening</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h5 class="font-medium mb-3">Night Photography</h5>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <div class="bg-gray-200 rounded-lg h-48 flex items-center justify-center mb-2">
+                                            <div class="text-gray-500 text-center px-4">
+                                                <i class="fas fa-image text-3xl mb-2"></i>
+                                                <p>iPhone 16 Sample</p>
+                                            </div>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Better noise control but slightly less brightness</p>
+                                    </div>
+                                    <div>
+                                        <div class="bg-gray-200 rounded-lg h-48 flex items-center justify-center mb-2">
+                                            <div class="text-gray-500 text-center px-4">
+                                                <i class="fas fa-image text-3xl mb-2"></i>
+                                                <p>Galaxy S24 Sample</p>
+                                            </div>
+                                        </div>
+                                        <p class="text-sm text-gray-600">Brighter images with more detailed shadows but more noise</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card bg-white p-6 mb-12">
+                    <h4 class="text-xl font-bold mb-6">Camera Performance Analysis</h4>
+                    
+                    <div class="mb-8">
+                        <h5 class="font-semibold text-lg mb-4">Key Differences</h5>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h6 class="font-medium mb-2">iPhone 16 Camera Highlights:</h6>
+                                <ul class="list-disc pl-5 space-y-2">
+                                    <li>More natural color reproduction</li>
+                                    <li>Better video stabilization and quality</li>
+                                    <li>Superior portrait mode with more accurate edge detection</li>
+                                    <li>Consistent results across different lighting conditions</li>
+                                    <li>Better zoom quality at 5x optical range</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h6 class="font-medium mb-2">Galaxy S24 Camera Highlights:</h6>
+                                <ul class="list-disc pl-5 space-y-2">
+                                    <li>Higher resolution main sensor for more detail in good lighting</li>
+                                    <li>More vibrant colors preferred by some users</li>
+                                    <li>Better low-light performance in extreme darkness</li>
+                                    <li>More shooting modes and creative options</li>
+                                    <li>8K video recording capability</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h5 class="font-semibold text-lg mb-4">Expert Opinion</h5>
+                        <p class="mb-4">Both smartphones offer exceptional camera systems that outperform most competitors in the market. The iPhone 16 delivers a more consistent experience with excellent color accuracy and video performance, making it ideal for users who want reliable results without extensive editing.</p>
+                        <p>The Galaxy S24 offers more versatility with its extensive shooting modes and settings, appealing to photography enthusiasts who enjoy post-processing and experimenting with different styles. Its night mode performance is particularly impressive in extremely dark environments.</p>
+                        <p class="mt-4 font-medium">Recommendation: If you prioritize video recording and consistent photo quality, choose the iPhone 16. If you prefer more manual control and creative flexibility, the Galaxy S24 is the better choice.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pricing Tab Content -->
+            <div id="pricing" class="tab-content">
+                <h3 class="text-2xl font-bold mb-8 section-title">Price Comparison</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <div class="card bg-white p-6">
+                        <h4 class="text-xl font-bold mb-6">iPhone 16 Pricing</h4>
+                        
+                        <table class="w-full border-collapse mb-6">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="text-left py-3 px-4 border-b">Storage</th>
+                                    <th class="text-left py-3 px-4 border-b">Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="py-3 px-4 border-b">128GB</td>
+                                    <td class="py-3 px-4 border-b font-medium">$799</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 border-b">256GB</td>
+                                    <td class="py-3 px-4 border-b font-medium">$899</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 border-b">512GB</td>
+                                    <td class="py-3 px-4 border-b font-medium">$1,099</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">1TB</td>
+                                    <td class="py-3 px-4 font-medium">$1,299</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h5 class="font-medium mb-3">Best Deals by Retailer</h5>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 border rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-gray-200 rounded-full mr-3 flex items-center justify-center">
+                                        <i class="fas fa-apple text-gray-600"></i>
+                                    </div>
+                                    <span>Apple Store</span>
+                                </div>
+                                <div>
+                                    <span class="font-medium">$799</span>
+                                    <span class="text-sm text-gray-500 ml-2">Full price</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 border rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-gray-200 rounded-full mr-3 flex items-center justify-center">
+                                        <i class="fas fa-shopping-cart text-gray-600"></i>
+                                    </div>
+                                    <span>Amazon</span>
+                                </div>
+                                <div>
+                                    <span class="font-medium">$779</span>
+                                    <span class="text-sm text-green-500 ml-2">Save $20</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 border rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-gray-200 rounded-full mr-3 flex items-center justify-center">
+                                        <i class="fas fa-tag text-gray-600"></i>
+                                    </div>
+                                    <span>Best Buy</span>
+                                </div>
+                                <div>
+                                    <span class="font-medium">$749</span>
+                                    <span class="text-sm text-green-500 ml-2">Save $50 with activation</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 border rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-gray-200 rounded-full mr-3 flex items-center justify-center">
+                                        <i class="fas fa-signal text-gray-600"></i>
+                                    </div>
+                                    <span>Verizon</span>
+                                </div>
+                                <div>
+                                    <span class="font-medium">$699</span>
+                                    <span class="text-sm text-green-500 ml-2">With 24-month contract</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card bg-white p-6">
+                        <h4 class="text-xl font-bold mb-6">Samsung Galaxy S24 Pricing</h4>
+                        
+                        <table class="w-full border-collapse mb-6">
+                            <thead>
+                                <tr class="bg-gray-100">
+                                    <th class="text-left py-3 px-4 border-b">Storage</th>
+                                    <th class="text-left py-3 px-4 border-b">Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="py-3 px-4 border-b">128GB</td>
+                                    <td class="py-3 px-4 border-b font-medium">$749</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4 border-b">256GB</td>
+                                    <td class="py-3 px-4 border-b font-medium">$809</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-3 px-4">512GB</td>
+                                    <td class="py-3 px-4 font-medium">$929</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
+                        <h5 class="font-medium mb-3">Best Deals by Retailer</h5>
+                        <div class="space-y-4">
+                            <div class="flex items-center justify-between p-3 border rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-gray-200 rounded-full mr-3 flex items-center justify-center">
+                                        <i class="fas fa-mobile-alt text-gray-600"></i>
+                                    </div>
+                                    <span>Samsung.com</span>
+                                </div>
+                                <div>
+                                    <span class="font-medium">$749</span>
+                                    <span class="text-sm text-gray-500 ml-2">Full price</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 border rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-gray-200 rounded-full mr-3 flex items-center justify-center">
+                                        <i class="fas fa-shopping-cart text-gray-600"></i>
+                                    </div>
+                                    <span>Amazon</span>
+                                </div>
+                                <div>
+                                    <span class="font-medium">$699</span>
+                                    <span class="text-sm text-green-500 ml-2">Save $50</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 border rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-gray-200 rounded-full mr-3 flex items-center justify-center">
+                                        <i class="fas fa-tag text-gray-600"></i>
+                                    </div>
+                                    <span>Best Buy</span>
+                                </div>
+                                <div>
+                                    <span class="font-medium">$649</span>
+                                    <span class="text-sm text-green-500 ml-2">Save $100 with activation</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between p-3 border rounded-lg">
+                                <div class="flex items-center">
+                                    <div class="w-8 h-8 bg-gray-200 rounded-full mr-3 flex items-center justify-center">
+                                        <i class="fas fa-signal text-gray-600"></i>
+                                    </div>
+                                    <span>T-Mobile</span>
+                                </div>
+                                <div>
+                                    <span class="font-medium">$599</span>
+                                    <span class="text-sm text-green-500 ml-2">With 24-month contract</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card bg-white p-6 mb-12">
+                    <h4 class="text-xl font-bold mb-6">Value Analysis</h4>
+                    
+                    <div class="mb-6">
+                        <h5 class="font-medium mb-3">Cost of Ownership Comparison</h5>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <h6 class="font-medium mb-2">iPhone 16:</h6>
+                                <ul class="list-disc pl-5 space-y-2">
+                                    <li>Higher initial cost ($799 vs $749)</li>
+                                    <li>Better resale value (typically retains 65-70% after 2 years)</li>
+                                    <li>Longer software support (7+ years vs 4-5 years)</li>
+                                    <li>Free ecosystem services (iCloud 5GB, iMessage, FaceTime)</li>
+                                    <li>AppleCare+ option: $149 for 2 years</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h6 class="font-medium mb-2">Galaxy S24:</h6>
+                                <ul class="list-disc pl-5 space-y-2">
+                                    <li>Lower initial cost ($749 vs $799)</li>
+                                    <li>Lower resale value (typically retains 45-50% after 2 years)</li>
+                                    <li>Shorter software support (4-5 years vs 7+ years)</li>
+                                    <li>Included accessories (better charging brick)</li>
+                                    <li>Samsung Care+ option: $129 for 2 years</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h5 class="font-medium mb-3">Best Value Proposition</h5>
+                        <p class="mb-4">When considering the total cost of ownership over 3-4 years, both phones offer similar value but in different ways:</p>
+                        <p><span class="font-medium">iPhone 16:</span> Better long-term value due to longer software support and higher resale value. If you plan to keep your phone for 4+ years or regularly trade in devices, the iPhone typically offers better overall value.</p>
+                        <p class="mt-2"><span class="font-medium">Galaxy S24:</span> Better short-term value due to lower initial cost and more frequent discounts. If you upgrade every 2-3 years and can find carrier promotions, the Galaxy can be more economical.</p>
+                        <p class="mt-4 font-medium">Recommendation: For long-term ownership, the iPhone 16 provides better value. For those who upgrade frequently or want immediate savings, the Galaxy S24 is more economical.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Reviews Tab Content -->
+            <div id="reviews" class="tab-content">
+                <h3 class="text-2xl font-bold mb-8 section-title">User Reviews</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <!-- iPhone 16 Reviews -->
+                    <div class="card bg-white p-6">
+                        <h4 class="text-xl font-bold mb-4">iPhone 16 User Ratings</h4>
+                        <div class="flex items-center mb-6">
+                            <div class="text-5xl font-bold text-indigo-600 mr-4">4.5</div>
+                            <div class="flex-1">
+                                <div class="flex items-center mb-1">
+                                    <div class="text-sm w-16">5 stars</div>
+                                    <div class="flex-1 mr-4">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill bg-green-500" style="width: 65%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm">65%</div>
+                                </div>
+                                <div class="flex items-center mb-1">
+                                    <div class="text-sm w-16">4 stars</div>
+                                    <div class="flex-1 mr-4">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill bg-green-400" style="width: 25%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm">25%</div>
+                                </div>
+                                <div class="flex items-center mb-1">
+                                    <div class="text-sm w-16">3 stars</div>
+                                    <div class="flex-1 mr-4">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill bg-yellow-400" style="width: 5%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm">5%</div>
+                                </div>
+                                <div class="flex items-center mb-1">
+                                    <div class="text-sm w-16">2 stars</div>
+                                    <div class="flex-1 mr-4">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill bg-red-300" style="width: 3%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm">3%</div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="text-sm w-16">1 star</div>
+                                    <div class="flex-1 mr-4">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill bg-red-500" style="width: 2%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm">2%</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h5 class="font-medium mb-3">What Users Love</h5>
+                        <div class="mb-6">
+                            <div class="flex items-center mb-2">
+                                <div class="w-32">Camera Quality</div>
+                                <div class="flex-1 mr-4">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-indigo-500" style="width: 92%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-sm">92%</div>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <div class="w-32">Performance</div>
+                                <div class="flex-1 mr-4">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-indigo-500" style="width: 95%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-sm">95%</div>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <div class="w-32">Build Quality</div>
+                                <div class="flex-1 mr-4">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-indigo-500" style="width: 90%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-sm">90%</div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-32">Battery Life</div>
+                                <div class="flex-1 mr-4">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-indigo-500" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-sm">75%</div>
+                            </div>
+                        </div>
+                        
+                        <h5 class="font-medium mb-3">Common Complaints</h5>
+                        <div>
+                            <div class="flex items-center mb-2">
+                                <div class="w-32">Price</div>
+                                <div class="flex-1 mr-4">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-gray-500" style="width: 68%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-sm">68%</div>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <div class="w-32">No Charger</div>
+                                <div class="flex-1 mr-4">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-gray-500" style="width: 72%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-sm">72%</div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-32">Slow Charging</div>
+                                <div class="flex-1 mr-4">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-gray-500" style="width: 58%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-sm">58%</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Samsung Galaxy S24 Reviews -->
+                    <div class="card bg-white p-6">
+                        <h4 class="text-xl font-bold mb-4">Galaxy S24 User Ratings</h4>
+                        <div class="flex items-center mb-6">
+                            <div class="text-5xl font-bold text-indigo-600 mr-4">4.0</div>
+                            <div class="flex-1">
+                                <div class="flex items-center mb-1">
+                                    <div class="text-sm w-16">5 stars</div>
+                                    <div class="flex-1 mr-4">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill bg-green-500" style="width: 48%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm">48%</div>
+                                </div>
+                                <div class="flex items-center mb-1">
+                                    <div class="text-sm w-16">4 stars</div>
+                                    <div class="flex-1 mr-4">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill bg-green-400" style="width: 30%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm">30%</div>
+                                </div>
+                                <div class="flex items-center mb-1">
+                                    <div class="text-sm w-16">3 stars</div>
+                                    <div class="flex-1 mr-4">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill bg-yellow-400" style="width: 12%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm">12%</div>
+                                </div>
+                                <div class="flex items-center mb-1">
+                                    <div class="text-sm w-16">2 stars</div>
+                                    <div class="flex-1 mr-4">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill bg-red-300" style="width: 6%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm">6%</div>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="text-sm w-16">1 star</div>
+                                    <div class="flex-1 mr-4">
+                                        <div class="progress-bar">
+                                            <div class="progress-fill bg-red-500" style="width: 4%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="text-sm">4%</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h5 class="font-medium mb-3">What Users Love</h5>
+                        <div class="mb-6">
+                            <div class="flex items-center mb-2">
+                                <div class="w-32">Display</div>
+                                <div class="flex-1 mr-4">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-indigo-500" style="width: 96%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-sm">96%</div>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <div class="w-32">Customization</div>
+                                <div class="flex-1 mr-4">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-indigo-500" style="width: 94%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-sm">94%</div>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <div class="w-32">Fast Charging</div>
+                                <div class="flex-1 mr-4">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-indigo-500" style="width: 88%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-sm">88%</div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-32">Camera Options</div>
+                                <div class="flex-1 mr-4">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-indigo-500" style="width: 85%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-sm">85%</div>
+                            </div>
+                        </div>
+                        
+                        <h5 class="font-medium mb-3">Common Complaints</h5>
+                        <div>
+                            <div class="flex items-center mb-2">
+                                <div class="w-32">Battery Life</div>
+                                <div class="flex-1 mr-4">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-gray-500" style="width: 62%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-sm">62%</div>
+                            </div>
+                            <div class="flex items-center mb-2">
+                                <div class="w-32">Bloatware</div>
+                                <div class="flex-1 mr-4">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-gray-500" style="width: 70%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-sm">70%</div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="w-32">Heating Issues</div>
+                                <div class="flex-1 mr-4">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill bg-gray-500" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                                <div class="text-sm">45%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <!-- Selected iPhone Reviews -->
+                    <div class="card bg-white p-6">
+                        <h4 class="text-xl font-bold mb-6">iPhone 16 Selected Reviews</h4>
+                        
+                        <div class="border-b pb-4 mb-4">
+                            <div class="flex items-center mb-2">
+                                <div class="font-medium">Sarah T.</div>
+                                <div class="ml-auto">
+                                    <span class="star-rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="text-gray-700 mb-2">"The camera system on the iPhone 16 is absolutely stunning. I've taken some of the best photos of my life with this phone, especially in low light conditions. The battery life is also notably improved from my previous iPhone 12."</p>
+                            <div class="text-sm text-gray-500">Verified Purchase · 2 months ago</div>
+                        </div>
+                        
+                        <div class="border-b pb-4 mb-4">
+                            <div class="flex items-center mb-2">
+                                <div class="font-medium">Michael R.</div>
+                                <div class="ml-auto">
+                                    <span class="star-rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="text-gray-700 mb-2">"The A17 Pro chip makes everything blazing fast. Apps open instantly, gaming is smooth, and I've noticed significantly better battery life compared to my iPhone 13. My only complaint is the slow charging speed - would have loved to see faster charging like the competition."</p>
+                            <div class="text-sm text-gray-500">Verified Purchase · 3 weeks ago</div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center mb-2">
+                                <div class="font-medium">David L.</div>
+                                <div class="ml-auto">
+                                    <span class="star-rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="text-gray-700 mb-2">"Great phone but not a huge upgrade from the iPhone 15. The camera is slightly better, and performance is marginally improved, but I'm not sure it was worth the upgrade for me. The lack of a charger in the box continues to be frustrating, especially at this price point."</p>
+                            <div class="text-sm text-gray-500">Verified Purchase · 1 month ago</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Selected Galaxy Reviews -->
+                    <div class="card bg-white p-6">
+                        <h4 class="text-xl font-bold mb-6">Galaxy S24 Selected Reviews</h4>
+                        
+                        <div class="border-b pb-4 mb-4">
+                            <div class="flex items-center mb-2">
+                                <div class="font-medium">Alex K.</div>
+                                <div class="ml-auto">
+                                    <span class="star-rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="text-gray-700 mb-2">"The display on the S24 is absolutely phenomenal. Colors pop, the brightness is incredible, and the 120Hz refresh rate makes everything buttery smooth. The camera system is versatile and the AI features are actually useful rather than gimmicky."</p>
+                            <div class="text-sm text-gray-500">Verified Purchase · 3 months ago</div>
+                        </div>
+                        
+                        <div class="border-b pb-4 mb-4">
+                            <div class="flex items-center mb-2">
+                                <div class="font-medium">Jessica M.</div>
+                                <div class="ml-auto">
+                                    <span class="star-rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="text-gray-700 mb-2">"Love this phone's design and display. Fast charging is a lifesaver, and the camera takes amazing shots. My only issue is battery life - with heavy use, I struggle to get through a full day, which is disappointing for a flagship device."</p>
+                            <div class="text-sm text-gray-500">Verified Purchase · 2 months ago</div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex items-center mb-2">
+                                <div class="font-medium">Raj P.</div>
+                                <div class="ml-auto">
+                                    <span class="star-rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="text-gray-700 mb-2">"While the hardware is impressive, I'm really frustrated with the amount of bloatware and duplicate apps. The phone also tends to heat up during gaming sessions, and the battery drains quickly when using the camera extensively. Samsung needs to focus on software optimization."</p>
+                            <div class="text-sm text-gray-500">Verified Purchase · 1 month ago</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card bg-white p-6 mb-12">
+                    <h4 class="text-xl font-bold mb-6">Expert Review Summary</h4>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-6">
+                        <div>
+                            <h5 class="font-semibold mb-3">iPhone 16 Review Consensus</h5>
+                            <p class="mb-4">Professional reviewers consistently praise the iPhone 16 for its exceptional camera system, powerful A17 Pro chip, and seamless integration with the Apple ecosystem. The latest iOS features are highlighted as genuine improvements to usability rather than mere novelties.</p>
+                            <p>Most experts cite the iPhone 16 as having industry-leading video recording capabilities and excellent battery optimization, though many criticize the continued slow charging speeds and high price point.</p>
+                        </div>
+                        <div>
+                            <h5 class="font-semibold mb-3">Galaxy S24 Review Consensus</h5>
+                            <p class="mb-4">Reviewers appreciate the Galaxy S24's stunning display quality, extensive customization options, and versatile camera system. The AI features receive particular praise for their practical applications in photography and productivity.</p>
+                            <p>Common criticisms include inconsistent battery performance, occasional heating issues during intensive tasks, and software that sometimes feels cluttered with duplicate applications.</p>
+                        </div>
+                    </div>
+                    
+                    <p class="font-medium">Expert Verdict: Both phones receive strong overall recommendations, with the iPhone 16 scoring slightly higher on average (89% vs 85%). The choice ultimately comes down to ecosystem preference and which specific features matter most to individual users.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- AI Recommendations Section -->
+    <section class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8 section-title">AI-Powered Recommendations</h2>
+            
+            <div class="card bg-white p-8 mb-12">
+                <h3 class="text-2xl font-bold mb-6">Which Phone is Better for You?</h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+                    <!-- For Everyday Users -->
+                    <div class="p-6 border rounded-lg">
+                        <div class="flex items-center justify-center bg-blue-100 rounded-full w-16 h-16 mb-4 mx-auto">
+                            <i class="fas fa-user text-blue-600 text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4 text-center">Everyday Users</h4>
+                        <p class="text-gray-700 mb-4">If you're looking for a reliable, easy-to-use phone with excellent camera quality and solid performance for everyday tasks.</p>
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <div class="font-bold text-center mb-2">Recommendation:</div>
+                            <div class="text-center text-blue-600 font-bold">iPhone 16</div>
+                            <p class="text-sm text-center mt-2">The intuitive interface, reliable performance, and excellent camera make it ideal for hassle-free daily use.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- For Power Users -->
+                    <div class="p-6 border rounded-lg">
+                        <div class="flex items-center justify-center bg-purple-100 rounded-full w-16 h-16 mb-4 mx-auto">
+                            <i class="fas fa-bolt text-purple-600 text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4 text-center">Power Users</h4>
+                        <p class="text-gray-700 mb-4">If you're a multitasker who needs advanced customization, split-screen capabilities, and extensive control over your device.</p>
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <div class="font-bold text-center mb-2">Recommendation:</div>
+                            <div class="text-center text-purple-600 font-bold">Galaxy S24</div>
+                            <p class="text-sm text-center mt-2">Superior multitasking capabilities, higher RAM, and extensive customization options make it ideal for power users.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- For Photography Enthusiasts -->
+                    <div class="p-6 border rounded-lg">
+                        <div class="flex items-center justify-center bg-green-100 rounded-full w-16 h-16 mb-4 mx-auto">
+                            <i class="fas fa-camera text-green-600 text-2xl"></i>
+                        </div>
+                        <h4 class="text-xl font-bold mb-4 text-center">Photography Enthusiasts</h4>
+                        <p class="text-gray-700 mb-4">If photography is your primary concern and you value both quality and creative control.</p>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <div class="font-bold text-center mb-2">Recommendation:</div>
+                            <div class="text-center text-green-600 font-bold">Tie</div>
+                            <p class="text-sm text-center mt-2">iPhone 16 for consistent, true-to-life photos and video. Galaxy S24 for more creative options and manual controls.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                    <!-- Pros & Cons -->
+                    <div>
+                        <h4 class="text-xl font-bold mb-6">iPhone 16: Pros & Cons</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pros-cons">
+                            <div class="pros">
+                                <h5 class="font-semibold text-green-600 mb-4">Pros</h5>
+                                <ul>
+                                    <li>Exceptional build quality and premium feel</li>
+                                    <li>Industry-leading performance with A17 Pro chip</li>
+                                    <li>Excellent camera system, especially for video</li>
+                                    <li>Longer software support (7+ years)</li>
+                                    <li>Better privacy features and ecosystem integration</li>
+                                    <li>Higher resale value</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h5 class="font-semibold text-red-600 mb-4">Cons</h5>
+                                <ul>
+                                    <li>Higher starting price</li>
+                                    <li>Slower charging speeds (25W vs 45W)</li>
+                                    <li>Less customization options</li>
+                                    <li>No charger included in the box</li>
+                                    <li>Limited file management compared to Android</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-bold mb-6">Galaxy S24: Pros & Cons</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pros-cons">
+                            <div class="pros">
+                                <h5 class="font-semibold text-green-600 mb-4">Pros</h5>
+                                <ul>
+                                    <li>Superior display with higher brightness</li>
+                                    <li>More RAM for better multitasking</li>
+                                    <li>Faster charging capabilities (45W)</li>
+                                    <li>Extensive customization options</li>
+                                    <li>Better integration with Windows PCs</li>
+                                    <li>Lower starting price point</li>
+                                </ul>
+                            </div>
+                            <div class="cons">
+                                <h5 class="font-semibold text-red-600 mb-4">Cons</h5>
+                                <ul>
+                                    <li>Shorter software support (4-5 years)</li>
+                                    <li>Occasional heating issues during intensive use</li>
+                                    <li>Less consistent camera performance</li>
+                                    <li>Preinstalled bloatware</li>
+                                    <li>Lower resale value over time</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="final-verdict">
+                    <h4 class="text-xl font-bold mb-4">Final Verdict</h4>
+                    <div class="p-6 bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg">
+                        <p class="mb-4"><span class="font-bold">Best Overall Value:</span> Both phones offer excellent value but serve different user needs.</p>
+                        
+                        <div class="mb-4">
+                            <p class="font-medium">Choose the iPhone 16 if you:</p>
+                            <ul class="list-disc pl-5 space-y-1 mt-2">
+                                <li>Value long-term software support and ecosystem integration</li>
+                                <li>Prioritize consistent performance and camera quality</li>
+                                <li>Want the best video recording capabilities</li>
+                                <li>Plan to keep your phone for 3+ years</li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <p class="font-medium">Choose the Galaxy S24 if you:</p>
+                            <ul class="list-disc pl-5 space-y-1 mt-2">
+                                <li>Prefer extensive customization and control over your device</li>
+                                <li>Need advanced multitasking capabilities</li>
+                                <li>Want the best possible display technology</li>
+                                <li>Prioritize fast charging and expandable storage</li>
+                            </ul>
+                        </div>
+                        
+                        <p class="mt-4 font-medium">Both the iPhone 16 and Samsung Galaxy S24 are exceptional devices that represent the pinnacle of smartphone technology in 2024. Your choice should ultimately be based on which ecosystem and feature set best aligns with your personal needs and preferences.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- YouTube Videos Section -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8 section-title">Related YouTube Videos</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+                <!-- Video 1 -->
+                <div class="card bg-white overflow-hidden">
+                    <div class="aspect-w-16 aspect-h-9 bg-gray-200">
+                        <div class="flex items-center justify-center h-full">
+                            <div class="text-center p-4">
+                                <i class="fab fa-youtube text-red-600 text-5xl mb-2"></i>
+                                <p class="text-gray-700">iPhone 16 vs Galaxy S24: Ultimate Comparison!</p>
+                                <p class="text-sm text-gray-500 mt-2">4.2M views</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold mb-2">iPhone 16 vs Galaxy S24: The ULTIMATE Comparison!</h3>
+                        <p class="text-gray-600 text-sm mb-3">A comprehensive comparison of the latest flagship smartphones from Apple and Samsung, covering design, performance, camera, and battery life.</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <span>TechReviewsHQ</span>
+                            <span class="mx-2">•</span>
+                            <span>4.2M views</span>
+                            <span class="mx-2">•</span>
+                            <span>2 months ago</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Video 2 -->
+                <div class="card bg-white overflow-hidden">
+                    <div class="aspect-w-16 aspect-h-9 bg-gray-200">
+                        <div class="flex items-center justify-center h-full">
+                            <div class="text-center p-4">
+                                <i class="fab fa-youtube text-red-600 text-5xl mb-2"></i>
+                                <p class="text-gray-700">Camera Test: iPhone 16 vs Galaxy S24</p>
+                                <p class="text-sm text-gray-500 mt-2">2.8M views</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold mb-2">Camera Test: iPhone 16 vs Galaxy S24 - Surprising Results!</h3>
+                        <p class="text-gray-600 text-sm mb-3">In-depth camera comparison between the iPhone 16 and Galaxy S24, testing photos and videos in various lighting conditions and scenarios.</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <span>MobilePhotographer</span>
+                            <span class="mx-2">•</span>
+                            <span>2.8M views</span>
+                            <span class="mx-2">•</span>
+                            <span>1 month ago</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Video 3 -->
+                <div class="card bg-white overflow-hidden">
+                    <div class="aspect-w-16 aspect-h-9 bg-gray-200">
+                        <div class="flex items-center justify-center h-full">
+                            <div class="text-center p-4">
+                                <i class="fab fa-youtube text-red-600 text-5xl mb-2"></i>
+                                <p class="text-gray-700">Battery Test: iPhone 16 vs Galaxy S24</p>
+                                <p class="text-sm text-gray-500 mt-2">1.5M views</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold mb-2">Battery Drain Test: iPhone 16 vs Galaxy S24 - Which Lasts Longer?</h3>
+                        <p class="text-gray-600 text-sm mb-3">Comprehensive battery life test comparing the iPhone 16 and Galaxy S24 across various scenarios including gaming, video playback, and mixed usage.</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <span>TechBatteries</span>
+                            <span class="mx-2">•</span>
+                            <span>1.5M views</span>
+                            <span class="mx-2">•</span>
+                            <span>3 weeks ago</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Where To Buy Section -->
+    <section class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8 section-title">Where to Buy</h2>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+                <!-- Apple Store -->
+                <a href="#" class="card bg-white p-6 text-center transition hover:shadow-lg">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/apple/apple-original.svg" alt="Apple Store" class="w-16 h-16 object-contain mx-auto mb-4 retailer-logo">
+                    <h3 class="font-bold mb-2">Apple Store</h3>
+                    <p class="text-gray-600 mb-2">Direct from manufacturer</p>
+                    <div class="text-indigo-600 font-bold">From $799</div>
+                </a>
+                
+                <!-- Samsung.com -->
+                <a href="#" class="card bg-white p-6 text-center transition hover:shadow-lg">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/android/android-original.svg" alt="Samsung.com" class="w-16 h-16 object-contain mx-auto mb-4 retailer-logo">
+                    <h3 class="font-bold mb-2">Samsung.com</h3>
+                    <p class="text-gray-600 mb-2">Direct from manufacturer</p>
+                    <div class="text-indigo-600 font-bold">From $749</div>
+                </a>
+                
+                <!-- Amazon -->
+                <a href="#" class="card bg-white p-6 text-center transition hover:shadow-lg">
+                    <div class="w-16 h-16 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center retailer-logo">
+                        <i class="fab fa-amazon text-gray-700 text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-2">Amazon</h3>
+                    <p class="text-gray-600 mb-2">Fast shipping options</p>
+                    <div class="text-indigo-600 font-bold">From $699</div>
+                </a>
+                
+                <!-- Best Buy -->
+                <a href="#" class="card bg-white p-6 text-center transition hover:shadow-lg">
+                    <div class="w-16 h-16 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center retailer-logo">
+                        <i class="fas fa-tag text-gray-700 text-3xl"></i>
+                    </div>
+                    <h3 class="font-bold mb-2">Best Buy</h3>
+                    <p class="text-gray-600 mb-2">Special carrier offers</p>
+                    <div class="text-indigo-600 font-bold">From $649</div>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Related Comparisons Section -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-8 section-title">Related Comparisons</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <!-- Related Comparison 1 -->
+                <a href="#" class="card bg-white p-6 transition hover:shadow-lg">
+                    <h3 class="font-bold text-lg mb-3">iPhone 16 Pro vs Samsung Galaxy S24 Ultra</h3>
+                    <p class="text-gray-600 mb-4">Compare the premium flagship models with advanced camera systems and larger displays.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-indigo-600">View Comparison</span>
+                        <i class="fas fa-arrow-right text-indigo-600"></i>
+                    </div>
+                </a>
+                
+                <!-- Related Comparison 2 -->
+                <a href="#" class="card bg-white p-6 transition hover:shadow-lg">
+                    <h3 class="font-bold text-lg mb-3">iPhone 16 vs Google Pixel 9</h3>
+                    <p class="text-gray-600 mb-4">See how Apple's latest compares to Google's flagship with its computational photography.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-indigo-600">View Comparison</span>
+                        <i class="fas fa-arrow-right text-indigo-600"></i>
+                    </div>
+                </a>
+                
+                <!-- Related Comparison 3 -->
+                <a href="#" class="card bg-white p-6 transition hover:shadow-lg">
+                    <h3 class="font-bold text-lg mb-3">Samsung Galaxy S24 vs OnePlus 12</h3>
+                    <p class="text-gray-600 mb-4">Compare Samsung's offering with the "flagship killer" from OnePlus with its rapid charging.</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-indigo-600">View Comparison</span>
+                        <i class="fas fa-arrow-right text-indigo-600"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Newsletter Section -->
+    <section class="py-12 bg-indigo-100">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-4">Stay Updated with TechCompare</h2>
+            <p class="text-gray-700 mb-8 max-w-2xl mx-auto">Subscribe to our newsletter to receive the latest tech comparisons, reviews, and buying advice directly in your inbox.</p>
+            
+            <div class="max-w-md mx-auto">
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <input type="email" placeholder="Your email address" class="flex-1 px-4 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <button class="bg-indigo-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-indigo-700 transition">Subscribe</button>
+                </div>
+                <p class="text-sm text-gray-600 mt-4">We respect your privacy. Unsubscribe at any time.</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">TechCompare</h3>
+                    <p class="text-gray-400 mb-4">Helping you make informed tech decisions with comprehensive, unbiased comparisons.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-gray-400 hover:text-white transition"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Categories</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Smartphones</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Laptops</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Tablets</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Wearables</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Headphones</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">About Us</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Our Mission</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">How We Test</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Editorial Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Our Team</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Contact Us</a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="font-bold mb-4">Legal</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Terms of Service</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Privacy Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Cookie Policy</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-white transition">Disclaimer</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="pt-8 border-t border-gray-700 text-center text-gray-400 text-sm">
+                <p>&copy; 2025 TechCompare. All rights reserved. All product names, logos, and brands are property of their respective owners.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab Switching Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('tab-active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('tab-active');
+                    
+                    // Hide all tab contents
+                    tabContents.forEach(content => content.classList.remove('active'));
+                    
+                    // Show the corresponding tab content
+                    const targetTab = this.getAttribute('data-tab');
+                    document.getElementById(targetTab).classList.add('active');
+                    
+                    // If it's the performance tab, initialize charts
+                    if (targetTab === 'performance') {
+                        initCharts();
+                    }
+                });
+            });
+            
+            // Search Functionality
+            const searchBtn = document.getElementById('searchBtn');
+            const searchInput = document.getElementById('searchInput');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            
+            searchBtn.addEventListener('click', function() {
+                if (searchInput.value.trim() !== '') {
+                    // Show loading overlay
+                    loadingOverlay.classList.add('active');
+                    
+                    // Simulate API call
+                    setTimeout(function() {
+                        // Hide loading overlay
+                        loadingOverlay.classList.remove('active');
+                        
+                        // Scroll to comparison section
+                        document.querySelector('.container').scrollIntoView({ behavior: 'smooth' });
+                    }, 1500);
+                }
+            });
+            
+            // Initialize Charts
+            initCharts();
+        });
+        
+        // Chart.js Initialization
+        function initCharts() {
+            // Benchmark Chart
+            const benchmarkCtx = document.getElementById('benchmarkChart');
+            if (benchmarkCtx) {
+                new Chart(benchmarkCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['AnTuTu', 'Geekbench Single', 'Geekbench Multi', '3DMark Wildlife'],
+                        datasets: [
+                            {
+                                label: 'iPhone 16',
+                                data: [1250000, 2350, 6200, 2800],
+                                backgroundColor: 'rgba(79, 70, 229, 0.7)',
+                                borderColor: 'rgba(79, 70, 229, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Galaxy S24',
+                                data: [1180000, 1950, 6800, 2600],
+                                backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Benchmark Scores (Higher is Better)'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Battery Chart
+            const batteryCtx = document.getElementById('batteryChart');
+            if (batteryCtx) {
+                new Chart(batteryCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Web Browsing', 'Video Playback', 'Gaming', 'Standby'],
+                        datasets: [
+                            {
+                                label: 'iPhone 16',
+                                data: [12, 18, 5, 72],
+                                backgroundColor: 'rgba(79, 70, 229, 0.7)',
+                                borderColor: 'rgba(79, 70, 229, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Galaxy S24',
+                                data: [11, 20, 4.5, 65],
+                                backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Battery Life in Hours (Higher is Better)'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Display Chart
+            const displayCtx = document.getElementById('displayChart');
+            if (displayCtx) {
+                new Chart(displayCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Brightness', 'Color Accuracy', 'Color Volume', 'Refresh Rate', 'HDR Quality'],
+                        datasets: [
+                            {
+                                label: 'iPhone 16',
+                                data: [85, 95, 88, 90, 92],
+                                backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                                borderColor: 'rgba(79, 70, 229, 1)',
+                                pointBackgroundColor: 'rgba(79, 70, 229, 1)',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: 'rgba(79, 70, 229, 1)'
+                            },
+                            {
+                                label: 'Galaxy S24',
+                                data: [95, 88, 92, 93, 90],
+                                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Display Quality Metrics (Higher is Better)'
+                            }
+                        },
+                        scales: {
+                            r: {
+                                beginAtZero: true,
+                                max: 100,
+                                ticks: {
+                                    stepSize: 20
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            
+            // Real-world Performance Chart
+            const realWorldCtx = document.getElementById('realWorldChart');
+            if (realWorldCtx) {
+                new Chart(realWorldCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['App Launch Time', 'Photo Processing', 'Video Export', 'Web Page Loading'],
+                        datasets: [
+                            {
+                                label: 'iPhone 16',
+                                data: [0.8, 2.3, 18, 1.2],
+                                backgroundColor: 'rgba(79, 70, 229, 0.7)',
+                                borderColor: 'rgba(79, 70, 229, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Galaxy S24',
+                                data: [1.0, 2.5, 15, 1.4],
+                                backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            title: {
+                                display: true,
+                                text: 'Real-World Performance in Seconds (Lower is Better)'
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Simulate API calls
+        function simulateAPICall(query) {
+            console.log('Simulating API call with query:', query);
+            console.log('Using Brave Search API Key: BSA237zJk_H-4q4N4DiS7aluc5tgSJ6');
+            console.log('Using Gemini AI API Key: AIzaSyB736r2Xjm6d8k_P39WFPwevaap8yfSNdY');
+            
+            // This would be replaced with actual API calls in production
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    resolve({
+                        success: true,
+                        data: {
+                            // Sample data structure that would come from the API
+                            products: [
+                                {
+                                    name: 'iPhone 16',
+                                    specs: {/* ... */}
+                                },
+                                {
+                                    name: 'Samsung Galaxy S24',
+                                    specs: {/* ... */}
+                                }
+                            ],
+                            comparison: {/* ... */},
+                            recommendations: {/* ... */}
+                        }
+                    });
+                }, 1500);
+            });
+        }
+    </script>
+</body>
+</html>
