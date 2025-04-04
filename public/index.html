@@ -236,6 +236,7 @@
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay">
         <div class="loading-spinner"></div>
+        <p class="mt-4 text-gray-700">Generating comparison...</p>
     </div>
 
     <!-- Header -->
@@ -253,7 +254,7 @@
                 <a href="#" class="font-medium text-gray-700 hover:text-indigo-600 transition">Wearables</a>
                 <a href="#" class="font-medium text-gray-700 hover:text-indigo-600 transition">About</a>
             </nav>
-            <button class="md:hidden focus:outline-none">
+            <button type="button" aria-label="Toggle navigation" title="Toggle navigation" class="md:hidden focus:outline-none">
                 <i class="fas fa-bars text-gray-700 text-xl"></i>
             </button>
         </div>
@@ -265,7 +266,7 @@
             <h1 class="text-4xl md:text-5xl font-bold mb-6">Compare Tech Products Like a Pro</h1>
             <p class="text-xl mb-8 max-w-3xl mx-auto">Get detailed specifications, performance metrics, and expert recommendations to make informed buying decisions.</p>
             <div class="max-w-3xl mx-auto relative">
-                <input type="text" id="searchInput" placeholder="Enter products to compare (e.g., iPhone 16 vs Samsung Galaxy S24)" class="w-full py-4 px-6 rounded-full shadow-lg text-gray-800 text-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <input type="text" id="searchInput" placeholder="Enter products to compare (e.g., iPhone 16 vs Samsung Galaxy S24)" class="w-full py-4 px-6 rounded-full shadow-lg text-gray-800 text-lg">
                 <button id="searchBtn" class="absolute right-2 top-2 bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-6 rounded-full font-medium transition">
                     Compare <i class="fas fa-arrow-right ml-2"></i>
                 </button>
@@ -2126,5 +2127,50 @@
             });
         }
     </script>
+<!-- AI Recommendations Section -->
+<section class="py-12 bg-gradient-to-r from-indigo-500 to-purple-600 text-white">
+  <div class="container mx-auto px-4">
+    <h2 class="text-3xl font-bold mb-6 text-center">AI-Powered Recommendation</h2>
+    <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-6 text-gray-800">
+      <div class="flex items-start mb-6">
+        <div class="text-indigo-600 mr-4 mt-1">
+          <i class="fas fa-robot text-3xl"></i>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-2">Based on your comparison</h3>
+          <div id="ai-recommendation" class="prose">
+            <p>Loading AI recommendation...</p>
+          </div>
+        </div>
+      </div>
+      <div id="ai-recommendation-details" class="mt-6 border-t pt-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h4 class="font-bold text-lg mb-3">Perfect for you if:</h4>
+            <ul id="ai-perfect-for" class="list-disc pl-5 space-y-2">
+              <li>You prioritize camera quality</li>
+              <li>Battery life is important to you</li>
+              <li>You need the latest technology</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-bold text-lg mb-3">Consider alternatives if:</h4>
+            <ul id="ai-alternatives" class="list-disc pl-5 space-y-2">
+              <li>You're on a tight budget</li>
+              <li>You need specific software</li>
+              <li>You prefer a different ecosystem</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+    <!-- Scripts -->
+    <script src="/js/charts.js"></script>
+    <script src="/js/main.js"></script>
+
 </body>
 </html>
