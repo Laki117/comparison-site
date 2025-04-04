@@ -1905,195 +1905,225 @@
         
         // Chart.js Initialization
         function initCharts() {
+          // Only initialize charts if they haven't been created yet
+          // This prevents duplicate chart creation
+          if (typeof window.chartInitialized === 'undefined' || !window.chartInitialized) { // Check if undefined OR false
+            window.chartInitialized = true; // Set flag
+        
             // Benchmark Chart
             const benchmarkCtx = document.getElementById('benchmarkChart');
             if (benchmarkCtx) {
-                new Chart(benchmarkCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['AnTuTu', 'Geekbench Single', 'Geekbench Multi', '3DMark Wildlife'],
-                        datasets: [
-                            {
-                                label: 'iPhone 16',
-                                data: [1250000, 2350, 6200, 2800],
-                                backgroundColor: 'rgba(79, 70, 229, 0.7)',
-                                borderColor: 'rgba(79, 70, 229, 1)',
-                                borderWidth: 1
-                            },
-                            {
-                                label: 'Galaxy S24',
-                                data: [1180000, 1950, 6800, 2600],
-                                backgroundColor: 'rgba(59, 130, 246, 0.7)',
-                                borderColor: 'rgba(59, 130, 246, 1)',
-                                borderWidth: 1
-                            }
-                        ]
+              // Check if a chart is already attached to this canvas
+              let existingChart = Chart.getChart(benchmarkCtx);
+              if (existingChart) {
+                existingChart.destroy();
+              }
+        
+              new Chart(benchmarkCtx, {
+                type: 'bar',
+                data: { // Original data from lines 1914-1930
+                  labels: ['AnTuTu', 'Geekbench Single', 'Geekbench Multi', '3DMark Wildlife'],
+                  datasets: [
+                    {
+                      label: 'iPhone 16',
+                      data: [1250000, 2350, 6200, 2800],
+                      backgroundColor: 'rgba(79, 70, 229, 0.7)',
+                      borderColor: 'rgba(79, 70, 229, 1)',
+                      borderWidth: 1
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                            },
-                            title: {
-                                display: true,
-                                text: 'Benchmark Scores (Higher is Better)'
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
+                    {
+                      label: 'Galaxy S24',
+                      data: [1180000, 1950, 6800, 2600],
+                      backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                      borderColor: 'rgba(59, 130, 246, 1)',
+                      borderWidth: 1
                     }
-                });
+                  ]
+                },
+                options: { // Original options from lines 1932-1949
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: {
+                      position: 'top',
+                    },
+                    title: {
+                      display: true,
+                      text: 'Benchmark Scores (Higher is Better)'
+                    }
+                  },
+                  scales: {
+                    y: {
+                      beginAtZero: true
+                    }
+                  }
+                }
+              });
             }
-            
+        
             // Battery Chart
             const batteryCtx = document.getElementById('batteryChart');
             if (batteryCtx) {
-                new Chart(batteryCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['Web Browsing', 'Video Playback', 'Gaming', 'Standby'],
-                        datasets: [
-                            {
-                                label: 'iPhone 16',
-                                data: [12, 18, 5, 72],
-                                backgroundColor: 'rgba(79, 70, 229, 0.7)',
-                                borderColor: 'rgba(79, 70, 229, 1)',
-                                borderWidth: 1
-                            },
-                            {
-                                label: 'Galaxy S24',
-                                data: [11, 20, 4.5, 65],
-                                backgroundColor: 'rgba(59, 130, 246, 0.7)',
-                                borderColor: 'rgba(59, 130, 246, 1)',
-                                borderWidth: 1
-                            }
-                        ]
+              // Check if a chart is already attached to this canvas
+              let existingChart = Chart.getChart(batteryCtx);
+              if (existingChart) {
+                existingChart.destroy();
+              }
+        
+              new Chart(batteryCtx, {
+                type: 'bar',
+                data: { // Original data from lines 1959-1975
+                  labels: ['Web Browsing', 'Video Playback', 'Gaming', 'Standby'],
+                  datasets: [
+                    {
+                      label: 'iPhone 16',
+                      data: [12, 18, 5, 72],
+                      backgroundColor: 'rgba(79, 70, 229, 0.7)',
+                      borderColor: 'rgba(79, 70, 229, 1)',
+                      borderWidth: 1
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                            },
-                            title: {
-                                display: true,
-                                text: 'Battery Life in Hours (Higher is Better)'
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
+                    {
+                      label: 'Galaxy S24',
+                      data: [11, 20, 4.5, 65],
+                      backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                      borderColor: 'rgba(59, 130, 246, 1)',
+                      borderWidth: 1
                     }
-                });
+                  ]
+                },
+                options: { // Original options from lines 1977-1994
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: {
+                      position: 'top',
+                    },
+                    title: {
+                      display: true,
+                      text: 'Battery Life in Hours (Higher is Better)'
+                    }
+                  },
+                  scales: {
+                    y: {
+                      beginAtZero: true
+                    }
+                  }
+                }
+              });
             }
-            
+        
             // Display Chart
             const displayCtx = document.getElementById('displayChart');
             if (displayCtx) {
-                new Chart(displayCtx, {
-                    type: 'radar',
-                    data: {
-                        labels: ['Brightness', 'Color Accuracy', 'Color Volume', 'Refresh Rate', 'HDR Quality'],
-                        datasets: [
-                            {
-                                label: 'iPhone 16',
-                                data: [85, 95, 88, 90, 92],
-                                backgroundColor: 'rgba(79, 70, 229, 0.2)',
-                                borderColor: 'rgba(79, 70, 229, 1)',
-                                pointBackgroundColor: 'rgba(79, 70, 229, 1)',
-                                pointBorderColor: '#fff',
-                                pointHoverBackgroundColor: '#fff',
-                                pointHoverBorderColor: 'rgba(79, 70, 229, 1)'
-                            },
-                            {
-                                label: 'Galaxy S24',
-                                data: [95, 88, 92, 93, 90],
-                                backgroundColor: 'rgba(59, 130, 246, 0.2)',
-                                borderColor: 'rgba(59, 130, 246, 1)',
-                                pointBackgroundColor: 'rgba(59, 130, 246, 1)',
-                                pointBorderColor: '#fff',
-                                pointHoverBackgroundColor: '#fff',
-                                pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
-                            }
-                        ]
+              // Check if a chart is already attached to this canvas
+              let existingChart = Chart.getChart(displayCtx);
+              if (existingChart) {
+                existingChart.destroy();
+              }
+        
+              new Chart(displayCtx, {
+                type: 'radar',
+                data: { // Original data from lines 2004-2026
+                  labels: ['Brightness', 'Color Accuracy', 'Color Volume', 'Refresh Rate', 'HDR Quality'],
+                  datasets: [
+                    {
+                      label: 'iPhone 16',
+                      data: [85, 95, 88, 90, 92],
+                      backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                      borderColor: 'rgba(79, 70, 229, 1)',
+                      pointBackgroundColor: 'rgba(79, 70, 229, 1)',
+                      pointBorderColor: '#fff',
+                      pointHoverBackgroundColor: '#fff',
+                      pointHoverBorderColor: 'rgba(79, 70, 229, 1)'
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                            },
-                            title: {
-                                display: true,
-                                text: 'Display Quality Metrics (Higher is Better)'
-                            }
-                        },
-                        scales: {
-                            r: {
-                                beginAtZero: true,
-                                max: 100,
-                                ticks: {
-                                    stepSize: 20
-                                }
-                            }
-                        }
+                    {
+                      label: 'Galaxy S24',
+                      data: [95, 88, 92, 93, 90],
+                      backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                      borderColor: 'rgba(59, 130, 246, 1)',
+                      pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                      pointBorderColor: '#fff',
+                      pointHoverBackgroundColor: '#fff',
+                      pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
                     }
-                });
+                  ]
+                },
+                options: { // Original options from lines 2028-2049
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: {
+                      position: 'top',
+                    },
+                    title: {
+                      display: true,
+                      text: 'Display Quality Metrics (Higher is Better)'
+                    }
+                  },
+                  scales: {
+                    r: {
+                      beginAtZero: true,
+                      max: 100,
+                      ticks: {
+                        stepSize: 20
+                      }
+                    }
+                  }
+                }
+              });
             }
-            
+        
             // Real-world Performance Chart
             const realWorldCtx = document.getElementById('realWorldChart');
             if (realWorldCtx) {
-                new Chart(realWorldCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['App Launch Time', 'Photo Processing', 'Video Export', 'Web Page Loading'],
-                        datasets: [
-                            {
-                                label: 'iPhone 16',
-                                data: [0.8, 2.3, 18, 1.2],
-                                backgroundColor: 'rgba(79, 70, 229, 0.7)',
-                                borderColor: 'rgba(79, 70, 229, 1)',
-                                borderWidth: 1
-                            },
-                            {
-                                label: 'Galaxy S24',
-                                data: [1.0, 2.5, 15, 1.4],
-                                backgroundColor: 'rgba(59, 130, 246, 0.7)',
-                                borderColor: 'rgba(59, 130, 246, 1)',
-                                borderWidth: 1
-                            }
-                        ]
+              // Check if a chart is already attached to this canvas
+              let existingChart = Chart.getChart(realWorldCtx);
+              if (existingChart) {
+                existingChart.destroy();
+              }
+        
+              new Chart(realWorldCtx, {
+                type: 'bar',
+                data: { // Original data from lines 2059-2075
+                  labels: ['App Launch Time', 'Photo Processing', 'Video Export', 'Web Page Loading'],
+                  datasets: [
+                    {
+                      label: 'iPhone 16',
+                      data: [0.8, 2.3, 18, 1.2],
+                      backgroundColor: 'rgba(79, 70, 229, 0.7)',
+                      borderColor: 'rgba(79, 70, 229, 1)',
+                      borderWidth: 1
                     },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                position: 'top',
-                            },
-                            title: {
-                                display: true,
-                                text: 'Real-World Performance in Seconds (Lower is Better)'
-                            }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
+                    {
+                      label: 'Galaxy S24',
+                      data: [1.0, 2.5, 15, 1.4],
+                      backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                      borderColor: 'rgba(59, 130, 246, 1)',
+                      borderWidth: 1
                     }
-                });
+                  ]
+                },
+                options: { // Original options from lines 2077-2094
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: {
+                      position: 'top',
+                    },
+                    title: {
+                      display: true,
+                      text: 'Real-World Performance in Seconds (Lower is Better)'
+                    }
+                  },
+                  scales: {
+                    y: {
+                      beginAtZero: true
+                    }
+                  }
+                }
+              });
             }
+          } // End of window.chartInitialized check
         }
         
         // Simulate API calls

@@ -60,171 +60,171 @@ document.addEventListener('DOMContentLoaded', function() {
     // Charts are initialized/updated only when data is received via updateChartsData
   }
   
-  function initializeCharts() {
-    // Only initialize if canvas elements exist and charts aren't already initialized
-    if (document.getElementById('benchmarkChart') && !benchmarkChart) {
-      const benchmarkCtx = document.getElementById('benchmarkChart').getContext('2d');
-      benchmarkChart = new Chart(benchmarkCtx, {
-        type: 'bar',
-        data: {
-          labels: ['Single-Core', 'Multi-Core', 'GPU', 'AnTuTu', 'Geekbench'],
-          datasets: [
-            {
-              label: 'iPhone 16',
-              data: [1700, 4800, 14000, 950000, 6200],
-              backgroundColor: 'rgba(59, 130, 246, 0.7)',
-              borderColor: 'rgb(59, 130, 246)',
-              borderWidth: 1
-            },
-            {
-              label: 'Samsung Galaxy S24',
-              data: [1500, 5200, 12500, 1100000, 5800],
-              backgroundColor: 'rgba(16, 185, 129, 0.7)',
-              borderColor: 'rgb(16, 185, 129)',
-              borderWidth: 1
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'top',
-            },
-            title: {
-              display: true,
-              text: 'Benchmark Scores (Higher is Better)'
-            }
-          }
-        }
-      });
-    }
-    
-    if (document.getElementById('batteryChart') && !batteryChart) {
-      const batteryCtx = document.getElementById('batteryChart').getContext('2d');
-      batteryChart = new Chart(batteryCtx, {
-        type: 'bar',
-        data: {
-          labels: ['Web Browsing', 'Video Playback', 'Gaming'],
-          datasets: [
-            {
-              label: 'iPhone 16',
-              data: [12, 18, 6],
-              backgroundColor: 'rgba(59, 130, 246, 0.7)',
-              borderColor: 'rgb(59, 130, 246)',
-              borderWidth: 1
-            },
-            {
-              label: 'Samsung Galaxy S24',
-              data: [11, 20, 5],
-              backgroundColor: 'rgba(16, 185, 129, 0.7)',
-              borderColor: 'rgb(16, 185, 129)',
-              borderWidth: 1
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'top',
-            },
-            title: {
-              display: true,
-              text: 'Battery Life in Hours (Higher is Better)'
-            }
-          }
-        }
-      });
-    }
-    
-    if (document.getElementById('displayChart') && !displayChart) {
-      const displayCtx = document.getElementById('displayChart').getContext('2d');
-      displayChart = new Chart(displayCtx, {
-        type: 'radar',
-        data: {
-          labels: ['Brightness', 'Color Accuracy', 'Refresh Rate', 'Resolution', 'HDR Quality'],
-          datasets: [
-            {
-              label: 'iPhone 16',
-              data: [90, 95, 85, 88, 92],
-              backgroundColor: 'rgba(59, 130, 246, 0.2)',
-              borderColor: 'rgb(59, 130, 246)',
-              borderWidth: 2,
-              pointBackgroundColor: 'rgb(59, 130, 246)'
-            },
-            {
-              label: 'Samsung Galaxy S24',
-              data: [95, 88, 90, 86, 94],
-              backgroundColor: 'rgba(16, 185, 129, 0.2)',
-              borderColor: 'rgb(16, 185, 129)',
-              borderWidth: 2,
-              pointBackgroundColor: 'rgb(16, 185, 129)'
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'top',
-            },
-            title: {
-              display: true,
-              text: 'Display Quality (Higher is Better)'
-            }
+function initializeCharts() {
+  // Only initialize if canvas elements exist and charts aren't already initialized
+  if (document.getElementById('benchmarkChart') && !benchmarkChart) {
+    const benchmarkCtx = document.getElementById('benchmarkChart').getContext('2d');
+    benchmarkChart = new Chart(benchmarkCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Single-Core', 'Multi-Core', 'GPU', 'AnTuTu', 'Geekbench'],
+        datasets: [
+          {
+            label: 'iPhone 16',
+            data: [1700, 4800, 14000, 950000, 6200],
+            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+            borderColor: 'rgb(59, 130, 246)',
+            borderWidth: 1
           },
-          scales: {
-            r: {
-              min: 0,
-              max: 100,
-              ticks: {
-                stepSize: 20
-              }
-            }
+          {
+            label: 'Samsung Galaxy S24',
+            data: [1500, 5200, 12500, 1100000, 5800],
+            backgroundColor: 'rgba(16, 185, 129, 0.7)',
+            borderColor: 'rgb(16, 185, 129)',
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Benchmark Scores (Higher is Better)'
           }
         }
-      });
-    }
-    
-    if (document.getElementById('realWorldChart') && !realWorldChart) {
-      const realWorldCtx = document.getElementById('realWorldChart').getContext('2d');
-      realWorldChart = new Chart(realWorldCtx, {
-        type: 'bar',
-        data: {
-          labels: ['App Loading', 'Photo Processing', 'Video Export', 'Web Browsing'],
-          datasets: [
-            {
-              label: 'iPhone 16',
-              data: [0.8, 3.2, 15, 0.9],
-              backgroundColor: 'rgba(59, 130, 246, 0.7)',
-              borderColor: 'rgb(59, 130, 246)',
-              borderWidth: 1
-            },
-            {
-              label: 'Samsung Galaxy S24',
-              data: [1.0, 2.9, 13, 1.1],
-              backgroundColor: 'rgba(16, 185, 129, 0.7)',
-              borderColor: 'rgb(16, 185, 129)',
-              borderWidth: 1
-            }
-          ]
-        },
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'top',
-            },
-            title: {
-              display: true,
-              text: 'Task Completion Time in Seconds (Lower is Better)'
-            }
-          }
-        }
-      });
-    }
+      }
+    });
   }
+
+  if (document.getElementById('batteryChart') && !batteryChart) {
+    const batteryCtx = document.getElementById('batteryChart').getContext('2d');
+    batteryChart = new Chart(batteryCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Web Browsing', 'Video Playback', 'Gaming'],
+        datasets: [
+          {
+            label: 'iPhone 16',
+            data: [12, 18, 6],
+            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+            borderColor: 'rgb(59, 130, 246)',
+            borderWidth: 1
+          },
+          {
+            label: 'Samsung Galaxy S24',
+            data: [11, 20, 5],
+            backgroundColor: 'rgba(16, 185, 129, 0.7)',
+            borderColor: 'rgb(16, 185, 129)',
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Battery Life in Hours (Higher is Better)'
+          }
+        }
+      }
+    });
+  }
+
+  if (document.getElementById('displayChart') && !displayChart) {
+    const displayCtx = document.getElementById('displayChart').getContext('2d');
+    displayChart = new Chart(displayCtx, {
+      type: 'radar',
+      data: {
+        labels: ['Brightness', 'Color Accuracy', 'Refresh Rate', 'Resolution', 'HDR Quality'],
+        datasets: [
+          {
+            label: 'iPhone 16',
+            data: [90, 95, 85, 88, 92],
+            backgroundColor: 'rgba(59, 130, 246, 0.2)',
+            borderColor: 'rgb(59, 130, 246)',
+            borderWidth: 2,
+            pointBackgroundColor: 'rgb(59, 130, 246)'
+          },
+          {
+            label: 'Samsung Galaxy S24',
+            data: [95, 88, 90, 86, 94],
+            backgroundColor: 'rgba(16, 185, 129, 0.2)',
+            borderColor: 'rgb(16, 185, 129)',
+            borderWidth: 2,
+            pointBackgroundColor: 'rgb(16, 185, 129)'
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Display Quality (Higher is Better)'
+          }
+        },
+        scales: {
+          r: {
+            min: 0,
+            max: 100,
+            ticks: {
+              stepSize: 20
+            }
+          }
+        }
+      }
+    });
+  }
+
+  if (document.getElementById('realWorldChart') && !realWorldChart) {
+    const realWorldCtx = document.getElementById('realWorldChart').getContext('2d');
+    realWorldChart = new Chart(realWorldCtx, {
+      type: 'bar',
+      data: {
+        labels: ['App Loading', 'Photo Processing', 'Video Export', 'Web Browsing'],
+        datasets: [
+          {
+            label: 'iPhone 16',
+            data: [0.8, 3.2, 15, 0.9],
+            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+            borderColor: 'rgb(59, 130, 246)',
+            borderWidth: 1
+          },
+          {
+            label: 'Samsung Galaxy S24',
+            data: [1.0, 2.9, 13, 1.1],
+            backgroundColor: 'rgba(16, 185, 129, 0.7)',
+            borderColor: 'rgb(16, 185, 129)',
+            borderWidth: 1
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: 'Task Completion Time in Seconds (Lower is Better)'
+          }
+        }
+      }
+    });
+  }
+}
   
   async function handleSearchClick() {
     const searchQuery = searchInput.value.trim();
@@ -369,28 +369,25 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
 function updateChartsData(data) {
-  // Check if performance data exists and if the charts are initialized
+  // Check if performance data exists
   if (!data.performance) return;
   
-  // Destroy existing charts and nullify variables
-  if (benchmarkChart) {
-    benchmarkChart.destroy();
-    benchmarkChart = null; // Explicitly nullify
-  }
-  if (batteryChart) {
-    batteryChart.destroy();
-    batteryChart = null; // Explicitly nullify
-  }
-  if (displayChart) {
-    displayChart.destroy();
-    displayChart = null; // Explicitly nullify
-  }
-  if (realWorldChart) {
-    realWorldChart.destroy();
-    realWorldChart = null; // Explicitly nullify
-  }
+  // First destroy any existing charts by using Chart.js registry
+  // This approach is more robust than just checking our own variables
+  Object.keys(Chart.instances).forEach(key => {
+    const instance = Chart.instances[key];
+    if (instance) {
+      instance.destroy();
+    }
+  });
   
-  // Re-initialize charts with new data
+  // Reset our chart variables
+  benchmarkChart = null;
+  batteryChart = null;
+  displayChart = null;
+  realWorldChart = null;
+  
+  // Now it's safe to re-initialize charts with new data
   if (document.getElementById('benchmarkChart')) {
     const benchmarkCtx = document.getElementById('benchmarkChart').getContext('2d');
     benchmarkChart = new Chart(benchmarkCtx, {
